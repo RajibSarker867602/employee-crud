@@ -27,17 +27,27 @@ namespace EmployeeManagement.Web.Services
             });
         }
 
-        public Task<ResponseDto> DeleteAsync(long id)
+        public async Task<ResponseDto> DeleteAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                Url = BaseEmpUrl,
+                APIType = APIType.DELETE,
+                Data = id
+            });
         }
 
-        public Task<ResponseDto> GetByEmailAsync(string email)
+        public async Task<ResponseDto> GetByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                Url = BaseEmpUrl,
+                APIType = APIType.GET,
+                Data = email
+            });
         }
 
-        public async Task<ResponseDto> GetEmployeeByIdAsync(int id)
+        public async Task<ResponseDto> GetEmployeeByIdAsync(long id)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
@@ -55,14 +65,23 @@ namespace EmployeeManagement.Web.Services
             });
         }
 
-        public Task<ResponseDto> SearchAsync(string name, GenderEnum? gender)
+        public async Task<ResponseDto> SearchAsync(string name, GenderEnum? gender)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                Url = BaseEmpUrl + $"?name={name}&gender/{gender}",
+                APIType = APIType.GET,
+            });
         }
 
-        public Task<ResponseDto> UpdateAsync(Employee employee)
+        public async Task<ResponseDto> UpdateAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                Url = BaseEmpUrl,
+                APIType = APIType.PUT,
+                Data = employee
+            });
         }
     }
 }

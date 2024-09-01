@@ -7,7 +7,7 @@ namespace EmployeeManagement.Web.Services
     public interface IEmployeeService
     {
         Task<ResponseDto> GetEmployeesAsync();
-        Task<ResponseDto> GetEmployeeByIdAsync(int id);
+        Task<ResponseDto> GetEmployeeByIdAsync(long id);
         Task<ResponseDto> AddAsync(Employee employee);
         Task<ResponseDto> UpdateAsync(Employee employee);
         Task<ResponseDto> DeleteAsync(long id);

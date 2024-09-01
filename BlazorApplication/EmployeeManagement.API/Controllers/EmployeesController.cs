@@ -105,8 +105,8 @@ namespace EmployeeManagement.API.Controllers
         }
 
         // PUT api/<EmployeesController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Employee value)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Employee value)
         {
             try
             {
