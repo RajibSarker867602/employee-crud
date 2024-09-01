@@ -1,10 +1,16 @@
 using EmployeeManagement.Web.Components;
+using EmployeeManagement.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpClient<IEmployeeService, EmployeeService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7093/api/employees/");
+});
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.API.Data;
 using EmployeeManagement.API.Repositories.Contracts;
 using EmployeeManagement.Models.Entities;
+using EmployeeManagement.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.API.Repositories
@@ -37,8 +38,28 @@ namespace EmployeeManagement.API.Repositories
             return await _db.Employees.ToListAsync();
         }
 
+        public async Task<Employee> GetByEmailAsync(string email)
+            => await _db.Employees.FirstOrDefaultAsync(c => c.Email.ToLower() == email.ToLower().Trim());
+
         public async Task<Employee> GetByIdAsync(long id)
-            => await _db.Employees.FirstOrDefaultAsync(c => c.Id == id);
+            => await _db.Employees.Include(c=> c.Department).FirstOrDefaultAsync(c => c.Id == id);
+
+        public async Task<ICollection<Employee>> SearchAsync(string name, GenderEnum? gender)
+        {
+            IQueryable<Employee> employees = _db.Employees;
+            if (!string.IsNullOrEmpty(name))
+            {
+                employees = employees.Where(c=> c.FirstName.ToLower().Contains(name.ToLower().Trim()) 
+                || c.LastName.ToLower().Contains(name.ToLower().Trim()));
+            }
+
+            if (gender != null)
+            {
+                employees = employees.Where(c => c.Gender == gender);
+            }
+
+            return await employees.ToListAsync();
+        }
 
         public async Task<Employee> UpdateAsync(Employee employee)
         {
