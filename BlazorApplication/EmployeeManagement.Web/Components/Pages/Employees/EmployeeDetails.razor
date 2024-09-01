@@ -1,9 +1,15 @@
 ﻿@page "/employeedetails/{id}"
 @page "/employeedetails"
-
+@rendermode InteractiveServer
 @inherits EmployeeDetailsBase
 
-<div class="row justify-content-center m-3">
+@if(Employee is null)
+{
+    <p>Loading....</p>
+}
+else
+{
+    <div class="row justify-content-center m-3">
     <div class="col-sm-8">
         <div class="card">
             <div class="card-header">
@@ -25,3 +31,5 @@
         </div>
     </div>
 </div>
+}
+

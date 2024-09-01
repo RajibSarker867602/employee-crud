@@ -1,4 +1,5 @@
 using EmployeeManagement.Web.Components;
+using EmployeeManagement.Web.Service;
 using EmployeeManagement.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient<IEmployeeService, EmployeeService>(client =>
+builder.Services.AddScoped<IBaseService, BaseService>();
+
+builder.Services.AddHttpClient<IEmployeeService, EmployeeService>();
+
+builder.Services.AddHttpClient<IDepartmentService, DepartmentService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7093/api/employees/");
+    client.BaseAddress = new Uri("https://localhost:7093/api/departments/");
 });
 
 var app = builder.Build();

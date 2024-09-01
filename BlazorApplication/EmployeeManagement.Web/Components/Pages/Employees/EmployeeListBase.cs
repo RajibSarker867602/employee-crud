@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Models.Entities;
 using EmployeeManagement.Models.Enums;
 using EmployeeManagement.Web.Services;
+using EmployeeManagement.Web.Utilities;
 using Microsoft.AspNetCore.Components;
 
 namespace EmployeeManagement.Web.Components.Pages.Employees
@@ -13,7 +14,8 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
-            Employees = await EmployeeService.GetEmployeesAsync();
+            var data = await EmployeeService.GetEmployeesAsync();
+            Employees = Utility.MapToResponse<IEnumerable<Employee>>(data.Result);
         }
 
         //private void LoadEmployees()
