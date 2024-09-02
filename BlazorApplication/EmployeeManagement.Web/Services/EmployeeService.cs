@@ -31,9 +31,8 @@ namespace EmployeeManagement.Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                Url = BaseEmpUrl,
+                Url = BaseEmpUrl + $"/{id}",
                 APIType = APIType.DELETE,
-                Data = id
             });
         }
 
