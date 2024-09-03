@@ -20,13 +20,19 @@
 {
     <div class="spinner"></div>
 }
+else if (Employees != null && Employees.Count == 0)
+{
+    <div class="alert alert-primary" role="alert">
+        No data found to display here.
+    </div>
+}
 else
 {
     <div class="card-deck row">
         @foreach (var employee in Employees)
         {
             <EmployeeCard EmployeeDeletedEvent="OnDeleted" Employee="employee" IsShowDetails="false"
-                          CssStyle="min-width: 18rem; max-width:30.5%; margin-right: 10px;">
+                          CssStyle="min-width: 18rem; max-width:30.5%; margin-right: 10px; margin-bottom: 10px">
             </EmployeeCard>
 
         }

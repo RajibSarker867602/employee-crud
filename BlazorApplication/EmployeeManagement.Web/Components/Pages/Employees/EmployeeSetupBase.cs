@@ -49,7 +49,6 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
                 Employee = new()
                 {
                     DateOfBrith = DateTime.Now,
-                    Gender = GenderEnum.Male,
                     PhotoPath = "images/man3.jpeg"
                 };
             }

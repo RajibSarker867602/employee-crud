@@ -15,6 +15,8 @@ namespace EmployeeManagement.Web.Components.Pages.Departments.List
 
         public ICollection<Department> Departments { get; set; }
 
+        public int Index = 1;
+
         protected async override Task OnInitializedAsync()
         {
             await LoadDepartments();
@@ -39,6 +41,11 @@ namespace EmployeeManagement.Web.Components.Pages.Departments.List
                     StateHasChanged();      //TODO: need a better way to refresh the list
                 }
             }
+        }
+
+        public void Increment()
+        {
+            Index++;
         }
     }
 }

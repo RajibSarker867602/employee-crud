@@ -1,5 +1,5 @@
 ﻿@page "/department-list"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(false))
 @inherits DepartmentListBase
 
 <h1>Department List</h1>
@@ -12,17 +12,29 @@
 }
 else
 {
-    <ul>
-        @foreach (var department in Departments)
-        {
-            <li>
-                @department.DepartmentName
-
-                <a href="@($"/setup-department/{department.Id}")">Edit</a>
-                <a href="" onclick="@(()=> OnDeleted(department.Id))">Delete</a>
-            </li>
-        }
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SL</th>
+                <th>Department Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var department in Departments)
+            {
+                <tr>
+                    <td>@Index</td>
+                    <td>@department.DepartmentName</td>
+                    <td>
+                        <a href="@($"/setup-department/{department.Id}")" class="btn btn-info">Edit</a>
+                        <a href="" onclick="@(()=> OnDeleted(department.Id))" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                Index++;
+            }
+        </tbody>
+    </table>
 }
 
 
