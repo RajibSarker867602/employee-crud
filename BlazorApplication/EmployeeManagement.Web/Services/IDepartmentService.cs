@@ -1,10 +1,15 @@
-﻿using EmployeeManagement.Models.Entities;
+﻿using EmployeeManagement.Models;
+using EmployeeManagement.Models.Entities;
 
 namespace EmployeeManagement.Web.Services
 {
     public interface IDepartmentService
     {
-        Task<ICollection<Department>> GetDepartmentsAsync();
-        Task<Department> GetDepartmentByIdAsync(int id);
+        Task<ResponseDto> GetDepartmentsAsync();
+        Task<ResponseDto> GetDepartmentByIdAsync(long id);
+        Task<ResponseDto> GetDepartmentByNameAsync(string name);
+        Task<ResponseDto> AddAsync(Department department);
+        Task<ResponseDto> UpdateAsync(Department department);
+        Task<ResponseDto> DeleteAsync(long id);
     }
 }

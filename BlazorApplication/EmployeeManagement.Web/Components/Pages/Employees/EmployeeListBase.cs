@@ -11,22 +11,26 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
     {
         [Inject]
         IEmployeeService EmployeeService { get; set; }
-        public IEnumerable<Employee> Employees { get; set; }
 
         [Inject]
         public IJSRuntime JsRunTime { get; set; }
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        public ICollection<Employee> Employees { get; set; }
+
+        public string SearchText = string.Empty;
+
         protected override async Task OnInitializedAsync()
         {
-            await LoadEmployees();   
+            await LoadEmployees();
         }
 
         private async Task LoadEmployees()
         {
             var data = await EmployeeService.GetEmployeesAsync();
-            Employees = Utility.MapToResponse<IEnumerable<Employee>>(data.Result);
+            Employees = Utility.MapToResponse<ICollection<Employee>>(data.Result);
         }
 
         protected async void OnDeleted(long id)
@@ -35,9 +39,28 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
             if (confirm)
             {
                 var isDeleted = await EmployeeService.DeleteAsync(id);
-                if(isDeleted != null && isDeleted.IsSuccess)
+                if (isDeleted != null && isDeleted.IsSuccess)
                 {
                     await LoadEmployees();
+                    StateHasChanged();
+                }
+            }
+        }
+
+        protected async void OnFilter(ChangeEventArgs e)
+        {
+            SearchText = e.Value.ToString();
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                await LoadEmployees();
+                StateHasChanged();
+            }
+            else
+            {
+                var employees = await EmployeeService.SearchAsync(SearchText, null);
+                if (employees != null && employees.IsSuccess)
+                {
+                    Employees = Utility.MapToResponse<ICollection<Employee>>(employees.Result);
                     StateHasChanged();
                 }
             }

@@ -68,7 +68,7 @@ namespace EmployeeManagement.Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                Url = BaseEmpUrl + $"?name={name}&gender/{gender}",
+                Url = BaseEmpUrl + (gender !=null ? $"/search?name={name}&gender/{gender}" : $"/search?name={name}"),
                 APIType = APIType.GET,
             });
         }

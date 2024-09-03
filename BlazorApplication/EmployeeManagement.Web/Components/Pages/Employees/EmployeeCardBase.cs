@@ -1,5 +1,7 @@
 ﻿using EmployeeManagement.Models.Entities;
+using EmployeeManagement.Web.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace EmployeeManagement.Web.Components.Pages.Employees
 {
@@ -19,5 +21,14 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
 
         [Parameter]
         public string CssClass { get; set; }
+
+        [Parameter]
+        public EventCallback<long> EmployeeDeletedEvent { get; set; }
+
+
+        protected async void OnDeleted(long id)
+        {
+            await EmployeeDeletedEvent.InvokeAsync(id);
+        }
     }
 }

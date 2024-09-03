@@ -3,6 +3,7 @@ using EmployeeManagement.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,5 +25,13 @@ namespace EmployeeManagement.Models.Entities
         public long DepartmentId { get; set; }
         public Department? Department { get; set; }
         public string PhotoPath { get; set; }
+
+        //[NotMapped]
+        //public string FullName => FirstName + " " + LastName;
+
+        //public string GetFullName()
+        //{
+        //    return FirstName + " " + LastName;
+        //}
     }
 }

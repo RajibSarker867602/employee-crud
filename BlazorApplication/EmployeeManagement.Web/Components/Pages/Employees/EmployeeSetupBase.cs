@@ -3,6 +3,7 @@ using EmployeeManagement.Models.Enums;
 using EmployeeManagement.Web.Services;
 using EmployeeManagement.Web.Utilities;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 
 namespace EmployeeManagement.Web.Components.Pages.Employees
 {
@@ -32,7 +33,8 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
             long.TryParse(Id, out long employeeId);
 
             // load departments
-            Departments = await DepartmentService.GetDepartmentsAsync();
+            var depts = await DepartmentService.GetDepartmentsAsync();
+            Departments = Utility.MapToResponse <ICollection<Department>>(depts.Result);
 
             if (employeeId > 0)
             {
