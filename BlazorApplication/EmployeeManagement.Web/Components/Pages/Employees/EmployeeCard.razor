@@ -28,6 +28,10 @@
             }
             <a href="@($"setupEmployee/{Employee.Id}")" class="btn btn-primary m-1">Edit</a>
             <a @onclick="()=> OnDeleted(Employee.Id)" class="btn btn-danger m-1">Delete</a>
+
+            @* <form method="post" @formname="@($"DeleteForm{Employee.Id}")" @onsubmit="@(()=> OnDeleted(Employee.Id))" data-enhance>
+                <button class="btn btn-danger">Delete</button>
+            </form> *@
         </div>
 
     </div>
