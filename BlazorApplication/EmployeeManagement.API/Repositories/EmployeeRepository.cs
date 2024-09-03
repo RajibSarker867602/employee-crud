@@ -42,14 +42,14 @@ namespace EmployeeManagement.API.Repositories
             => await _db.Employees.FirstOrDefaultAsync(c => c.Email.ToLower() == email.ToLower().Trim());
 
         public async Task<Employee> GetByIdAsync(long id)
-            => await _db.Employees.Include(c=> c.Department).FirstOrDefaultAsync(c => c.Id == id);
+            => await _db.Employees.Include(c => c.Department).FirstOrDefaultAsync(c => c.Id == id);
 
         public async Task<ICollection<Employee>> SearchAsync(string name, GenderEnum? gender)
         {
             IQueryable<Employee> employees = _db.Employees;
             if (!string.IsNullOrEmpty(name))
             {
-                employees = employees.Where(c=> c.FirstName.ToLower().Contains(name.ToLower().Trim()) 
+                employees = employees.Where(c => (c.FirstName.ToLower() + " " + c.LastName.ToLower()).Contains(name.ToLower().Trim())
                 || c.LastName.ToLower().Contains(name.ToLower().Trim()));
             }
 

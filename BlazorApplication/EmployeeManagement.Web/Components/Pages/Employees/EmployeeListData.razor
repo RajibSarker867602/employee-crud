@@ -1,0 +1,34 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inherits EmployeeListBase
+
+
+<h3>Employee List</h3>
+<div class="row d-flex justify-content-between">
+    <div class="col-md-2">
+        <a class="btn btn-primary" href="/setupEmployee">Create Employee</a>
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" @oninput="OnFilter" placeholder="Filter by name" />
+    </div>
+</div>
+
+<hr />
+
+
+@if (Employees == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="card-deck row">
+        @foreach (var employee in Employees)
+        {
+            <EmployeeCard EmployeeDeletedEvent="OnDeleted" Employee="employee" IsShowDetails="false"
+                          CssStyle="min-width: 18rem; max-width:30.5%; margin-right: 10px;">
+            </EmployeeCard>
+
+        }
+    </div>
+}

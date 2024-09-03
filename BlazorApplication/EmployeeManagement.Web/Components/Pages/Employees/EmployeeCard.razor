@@ -27,7 +27,7 @@
                 <a href="/" class="btn btn-primary m-1">Back</a>
             }
             <a href="@($"setupEmployee/{Employee.Id}")" class="btn btn-primary m-1">Edit</a>
-            <a href="#" class="btn btn-danger m-1">Delete</a>
+            <a @onclick="()=> OnDeleted(Employee.Id)" class="btn btn-danger m-1">Delete</a>
         </div>
 
     </div>

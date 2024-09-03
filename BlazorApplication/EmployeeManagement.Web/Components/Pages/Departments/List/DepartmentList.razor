@@ -1,0 +1,28 @@
+﻿@page "/department-list"
+@rendermode InteractiveServer
+@inherits DepartmentListBase
+
+<h1>Department List</h1>
+<a class="btn btn-primary" href="/setup-department">Create Department</a>
+<hr />
+
+@if (Departments is null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <ul>
+        @foreach (var department in Departments)
+        {
+            <li>
+                @department.DepartmentName
+
+                <a href="@($"/setup-department/{department.Id}")">Edit</a>
+                <a href="" onclick="@(()=> OnDeleted(department.Id))">Delete</a>
+            </li>
+        }
+    </ul>
+}
+
+
