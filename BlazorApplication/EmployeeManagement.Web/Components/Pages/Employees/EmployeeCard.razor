@@ -1,0 +1,38 @@
+﻿@inherits EmployeeCardBase
+@rendermode InteractiveServer
+
+@if (Employee != null)
+{
+    <div class="card @CssClass" style="@CssStyle">
+        <div class="card-header">
+            <h1>@Employee.FirstName @Employee.LastName</h1>
+        </div>
+        <div class="card-body text-center">
+            <img class="card-img-top" src="@Employee.PhotoPath" />
+
+            @if (IsShowDetails)
+            {
+                <h4>Employee ID : @Employee.Id</h4>
+                <h4>Email : @Employee.Email</h4>
+                <h4>Department : @(Employee.Department is null ? "N/A" : Employee.Department.DepartmentName)</h4>
+            }
+        </div>
+        <div class="card-footer text-center">
+            @if (IsShowViewBtn)
+            {
+                <a href="@($"employeedetails/{Employee.Id}")" class="btn btn-primary m-1">View</a>
+            }
+            else
+            {
+                <a href="/" class="btn btn-primary m-1">Back</a>
+            }
+            <a href="@($"setupEmployee/{Employee.Id}")" class="btn btn-primary m-1">Edit</a>
+            <a href="#" class="btn btn-danger m-1">Delete</a>
+        </div>
+
+    </div>
+}
+else
+{
+    <p>Employee information not found!</p>
+}

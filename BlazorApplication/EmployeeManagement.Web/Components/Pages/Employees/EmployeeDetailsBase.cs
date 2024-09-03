@@ -1,6 +1,8 @@
 ﻿using EmployeeManagement.Models.Entities;
 using EmployeeManagement.Web.Services;
+using EmployeeManagement.Web.Utilities;
 using Microsoft.AspNetCore.Components;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeManagement.Web.Components.Pages.Employees
 {
@@ -16,7 +18,8 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
         protected override async Task OnInitializedAsync()
         {
             Id = Id ?? "1";
-            Employee = await EmployeeService.GetEmployeeByIdAsync(int.Parse(Id));
+            var data = await EmployeeService.GetEmployeeByIdAsync(int.Parse(Id));
+            Employee = Utility.MapToResponse<Employee>(data.Result); 
         }
     }
 }

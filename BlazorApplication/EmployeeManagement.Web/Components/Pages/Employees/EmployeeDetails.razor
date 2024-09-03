@@ -1,9 +1,20 @@
 ﻿@page "/employeedetails/{id}"
 @page "/employeedetails"
-
+@rendermode InteractiveServer
 @inherits EmployeeDetailsBase
 
-<div class="row justify-content-center m-3">
+@if(Employee is null)
+{
+    <p>Loading....</p>
+}
+else
+{
+    <EmployeeCard Employee="Employee" IsShowViewBtn="false"
+        CssClass="m-auto col-md-8">
+
+    </EmployeeCard>
+
+    @* <div class="row justify-content-center m-3">
     <div class="col-sm-8">
         <div class="card">
             <div class="card-header">
@@ -19,9 +30,11 @@
             </div>
             <div class="card-footer text-center">
                 <a href="/" class="btn btn-primary">Back</a>
-                <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="@($"setupEmployee/{Employee.Id}")" class="btn btn-primary">Edit</a>
                 <a href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
-</div>
+</div> *@
+}
+

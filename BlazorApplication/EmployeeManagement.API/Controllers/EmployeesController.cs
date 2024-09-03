@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.API.Repositories.Contracts;
+using EmployeeManagement.Models;
 using EmployeeManagement.Models.Entities;
 using EmployeeManagement.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace EmployeeManagement.API.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly ResponseDto _response;
 
         public EmployeesController(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
+             _response = new ResponseDto();
         }
 
         [HttpGet("search")]
@@ -23,13 +26,18 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
-                return Ok(await _employeeRepository.SearchAsync(name, gender));
+                var response = await _employeeRepository.SearchAsync(name, gender);
+                _response.Result = response;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                   "Employees data not found! Please try again later.");
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+                //return StatusCode(StatusCodes.Status500InternalServerError,
+                //                   "Employees data not found! Please try again later.");
             }
+
+            return Ok(_response);
         }
 
         // GET: api/<EmployeesController>
@@ -38,14 +46,18 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
-                return Ok(await _employeeRepository.GetAllAsync());
+                _response.Result = await _employeeRepository.GetAllAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
 
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    "Employees data not found! Please try again later.");
+                //return StatusCode(StatusCodes.Status500InternalServerError, 
+                //    "Employees data not found! Please try again later.");
             }
+
+            return Ok(_response);
         }
 
         // GET api/<EmployeesController>/5
@@ -54,14 +66,17 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
-                return Ok(await _employeeRepository.GetByIdAsync(id));
+                _response.Result = await _employeeRepository.GetByIdAsync(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Employees data not found! Please try again later.");
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+                //return StatusCode(StatusCodes.Status500InternalServerError,
+                //    "Employees data not found! Please try again later.");
             }
+
+            return Ok(_response);
         }
 
         // POST api/<EmployeesController>
@@ -70,35 +85,42 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
-                if (value is null) return BadRequest("Invalid input request.");
+                if (value is null) throw new Exception("Invalid input request.");
 
                 var isExist = await _employeeRepository.GetByEmailAsync(value.Email);
-                if (isExist != null) return BadRequest("Email is already exist.");
-
-                return Ok(await _employeeRepository.AddAsync(value));
+                if (isExist != null) throw new Exception("Email is already exist.");
+ 
+                _response.Result = await _employeeRepository.AddAsync(value);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
 
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Employees data could not be saved! Please try again later.");
+                //return StatusCode(StatusCodes.Status500InternalServerError,
+                //    "Employees data could not be saved! Please try again later.");
             }
+
+            return Ok(_response);
         }
 
         // PUT api/<EmployeesController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Employee value)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Employee value)
         {
             try
             {
-                return Ok(await _employeeRepository.UpdateAsync(value));
+                _response.Result = await _employeeRepository.UpdateAsync(value);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Employees data could not be updated! Please try again later.");
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+                //return StatusCode(StatusCodes.Status500InternalServerError,
+                //    "Employees data could not be updated! Please try again later.");
             }
+
+            return Ok(_response);
         }
 
         // DELETE api/<EmployeesController>/5
@@ -107,14 +129,17 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
-                return Ok(await _employeeRepository.DeleteAsync(id));
+                _response.Result = await _employeeRepository.DeleteAsync(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Employees data could not be deleted! Please try again later.");
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+                //return StatusCode(StatusCodes.Status500InternalServerError,
+                //    "Employees data could not be deleted! Please try again later.");
             }
+
+            return Ok(_response);
         }
     }
 }

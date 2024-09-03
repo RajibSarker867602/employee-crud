@@ -16,12 +16,13 @@ namespace EmployeeManagement.Models.Entities
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         public string Address { get; set; }
         public DateTime DateOfBrith { get; set; }
         public GenderEnum Gender { get; set; }
         public long DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
         public string PhotoPath { get; set; }
     }
 }

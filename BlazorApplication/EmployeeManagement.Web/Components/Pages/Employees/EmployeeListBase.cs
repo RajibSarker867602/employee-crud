@@ -1,7 +1,9 @@
 ﻿using EmployeeManagement.Models.Entities;
 using EmployeeManagement.Models.Enums;
 using EmployeeManagement.Web.Services;
+using EmployeeManagement.Web.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace EmployeeManagement.Web.Components.Pages.Employees
 {
@@ -11,55 +13,34 @@ namespace EmployeeManagement.Web.Components.Pages.Employees
         IEmployeeService EmployeeService { get; set; }
         public IEnumerable<Employee> Employees { get; set; }
 
+        [Inject]
+        public IJSRuntime JsRunTime { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            Employees = await EmployeeService.GetEmployeesAsync();
+            await LoadEmployees();   
         }
 
-        //private void LoadEmployees()
-        //{
-        //    // make 3 seconds delayed...
-        //    System.Threading.Thread.Sleep(3000);
+        private async Task LoadEmployees()
+        {
+            var data = await EmployeeService.GetEmployeesAsync();
+            Employees = Utility.MapToResponse<IEnumerable<Employee>>(data.Result);
+        }
 
-        //    Employees = new List<Employee>()
-        //    {
-        //        new Employee()
-        //        {
-        //            Id = 1,
-        //            FirstName = "Rajib",
-        //            LastName = "Sarker",
-        //            Email = "RajibSarker320@gmail.com",
-        //            Address = "Dhaka",
-        //            DateOfBrith = new DateTime(1980, 10, 5),
-        //            DepartmentId = 1,
-        //            Gender = GenderEnum.Male,
-        //            PhotoPath = "images/man1.jpeg"
-        //        },
-        //        new Employee()
-        //        {
-        //            Id = 2,
-        //            FirstName = "Raju",
-        //            LastName = "Sarker",
-        //            Email = "RajuSarker320@gmail.com",
-        //            Address = "Dhaka",
-        //            DateOfBrith = new DateTime(1980, 10, 5),
-        //            DepartmentId = 1,
-        //            Gender = GenderEnum.Male,
-        //            PhotoPath = "images/man2.jpeg"
-        //        },
-        //        new Employee()
-        //        {
-        //            Id = 2,
-        //            FirstName = "Sajib",
-        //            LastName = "Sarker",
-        //            Email = "SajibSarker320@gmail.com",
-        //            Address = "Dhaka",
-        //            DateOfBrith = new DateTime(1980, 10, 5),
-        //            DepartmentId = 2,
-        //            Gender = GenderEnum.Male,
-        //            PhotoPath = "images/man3.jpeg"
-        //        },
-        //    };
-        //}
+        protected async void OnDeleted(long id)
+        {
+            var confirm = await JsRunTime.InvokeAsync<bool>("showConfirmAlert", "Are you sure to delete this employee information?");
+            if (confirm)
+            {
+                var isDeleted = await EmployeeService.DeleteAsync(id);
+                if(isDeleted != null && isDeleted.IsSuccess)
+                {
+                    await LoadEmployees();
+                    StateHasChanged();
+                }
+            }
+        }
     }
 }
